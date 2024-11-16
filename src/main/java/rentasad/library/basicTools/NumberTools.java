@@ -5,8 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Utility class for various number-related operations such as formatting, parsing,
+ * and generating random numbers.
+ */
 public class NumberTools
 {
+    /**
+     * Checks if the provided string can be parsed into a double.
+     *
+     * @param number the string to be checked
+     * @return true if the string can be parsed into a double, false otherwise
+     */
     public static boolean isNumeric(final String number)
     {
         try
@@ -19,7 +29,13 @@ public class NumberTools
         }
         return true;
     }
-    
+
+    /**
+     * Checks if the provided string can be parsed into an integer.
+     *
+     * @param number the string to be checked
+     * @return true if the string can be parsed into an integer, false otherwise
+     */
     public static boolean isNumericInteger(final String number)
     {
         try
@@ -32,13 +48,12 @@ public class NumberTools
         }
         return true;
     }
+
     /**
-     * 
-     * Description: 
-     * 
-     * @param number
-     * @return
-     * Creation: 19.01.2017 by mst
+     * Checks if the provided string can be parsed into a long integer.
+     *
+     * @param number the string to be checked
+     * @return true if the string can be parsed into a long integer, false otherwise
      */
     public static boolean isNumericLong(final String number)
     {
@@ -54,12 +69,10 @@ public class NumberTools
     }
 
     /**
+     * Formats the given number to ensure it has at least two digits, adding a leading zero if necessary.
      *
-     * Description: Gibt eine einstellige Integerzahl mit fuehrender Null zurueck
-     *
-     * @param number
-     * @return
-     *         Creation: 11.04.2016 by mst
+     * @param number the number to format
+     * @return a string representation of the number with at least two digits
      */
     public static String getLeadingZero(int number)
     {
@@ -110,73 +123,95 @@ public class NumberTools
      * @param value
      *            Creation: 25.04.2016 by mst
      */
-    static public String customFormat(String pattern, double value)
-    {
-        DecimalFormat myFormatter = new DecimalFormat(pattern);
-        String output = myFormatter.format(value);
-        // System.out.println(value + " " + pattern + " " + output);
-        return output;
+    public static String customFormat(String pattern, double value) {
+        DecimalFormat decimalFormatter = new DecimalFormat(pattern); // Variable umbenennen für bessere Lesbarkeit
+		// Variable eingeführt für bessere Verständlichkeit
+		return decimalFormatter.format(value); // Direkte Rückgabe der formatierten Zeichenfolge
     }
 
-    /**
-     *
-     * Description:Gibt count Zahlen zwischen min und max gewuerfelt aus
-     * Achtet darauf, dass keine Zahlen doppelt vorkommen.
-     *
-     * Setzt voraus, dass count nicht groesser als Differenz zwischen min und max ist.
-     *
-     * @param min
-     * @param max
-     * @param count
-     * @return
-     *         Creation: 25.02.2016 by mst
-     */
+
     public static List<Integer> randomGenerator(int min, int max, int count)
     {
-        final List<Integer> numberAmountList = new ArrayList<Integer>();
-
-        Random random = new Random();
-        int difference = (max - min) + 1;
-        while (numberAmountList.size() < count)
-        {
-            List<Integer> laufListe = new ArrayList<Integer>();
-            while (laufListe.size() < difference)
-            {
-                Integer randomNum = random.nextInt((max - min) + 1) + min;
-                if ((!laufListe.contains(randomNum)) && randomNum > 0)
-                    laufListe.add(randomNum);
-            }
-            numberAmountList.addAll(laufListe);
-        }
-
-        return numberAmountList;
+        return generateRandomNumbers(min, max, count);
     }
 
     /**
-     * 
-     * Description: Convert a boolean value to integer 
-     * 
-     * 
-     * @param booleanValue
-     * @return true = 1, false = 0
-     * Creation: 09.02.2018 by mst
+     * Generates a list of unique random integers within a specified range.
+     *
+     * @param min the minimum value of the range (inclusive)
+     * @param max the maximum value of the range (inclusive)
+     * @param count the number of random integers to generate
+     * @return a list of unique random integers within the specified range
+     * @throws IllegalArgumentException if the input parameters are invalid
+     */
+    public static List<Integer> generateRandomNumbers(int min, int max, int count) {
+        validateInput(min, max, count);
+
+        final List<Integer> randomNumbers = new ArrayList<>();
+        Random random = new Random();
+        int range = (max - min) + 1;
+
+        while (randomNumbers.size() < count) {
+            int randomNumber = random.nextInt(range) + min;
+            if (!randomNumbers.contains(randomNumber) && randomNumber > 0) {
+                randomNumbers.add(randomNumber);
+            }
+        }
+
+        return randomNumbers;
+    }
+
+    /**
+     * Validates the input parameters for generating random numbers.
+     * Ensures that the minimum value is less than the maximum value, the count of numbers to generate is positive,
+     * and the count does not exceed the range difference.
+     *
+     * @param min   the minimum value of the range
+     * @param max   the maximum value of the range
+     * @param count the number of random integers to generate
+     * @throws IllegalArgumentException if the input parameters are invalid
+     */
+    private static void validateInput(int min, int max, int count) {
+        if (min > max || count < 1) {
+            throw new IllegalArgumentException("Min should be less than Max and count should be positive.");
+        }
+
+        int difference = (max - min) + 1;
+        if (count > difference) {
+            throw new IllegalArgumentException("Count shouldn't be greater than the difference between Min and Max.");
+        }
+    }
+
+    /**
+     * Converts a boolean value to an integer.
+     *
+     * @param booleanValue the boolean value to convert
+     * @return 1 if the boolean value is true, 0 if the boolean value is false
      */
     public static int getIntFromBoolean(boolean booleanValue)
     {
-        if (booleanValue)
-        {
-            return 1;
-        }else
-        {
-            return 0;
-        }
+        return convertBooleanToInt( booleanValue);
     }
-    
+
     /**
-     * Rundet den übergebenen Wert auf die Anzahl der übergebenen Nachkommastellen
+     * Converts a boolean value to an integer representation.
      *
-     * @param value ist der zu rundende Wert.
-     * @param decimalPoints ist die Anzahl der Nachkommastellen, auf die gerundet werden soll.
+     * @param booleanValue the boolean value to convert
+     * @return 1 if the boolean value is true, 0 if the boolean value is false
+     */
+    public static int convertBooleanToInt(boolean booleanValue) {
+        final int TRUE_AS_INT = 1;
+        final int FALSE_AS_INT = 0;
+
+        return booleanValue ? TRUE_AS_INT : FALSE_AS_INT;
+    }
+
+    /**
+     * Rounds the specified value to a given number of decimal places.
+     *
+     * @param value the double value to be rounded
+     * @param decimalPoints the number of decimal places to round to
+     * @return the rounded value as a double
      */
      public static double round(double value, int decimalPoints) {
         double d = Math.pow(10, decimalPoints);
