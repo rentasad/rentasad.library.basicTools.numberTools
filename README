@@ -27,12 +27,6 @@ String formattedNumber = NumberTools.formatNumber(1234.56789, df);
 System.out.println(formattedNumber); // Output: "1234.57"
 ```
 
-### Generate a Random Number
-```java
-int random = NumberTools.generateRandomNumber(1, 100);
-System.out.println(random); // Output: A random number between 1 and 100
-```
-
 ## Methods Summary
 1. **`isParsableToDouble(String number)`**: Checks if the provided string can be parsed into a double.
    - **Parameters**: `String number`
@@ -41,7 +35,6 @@ System.out.println(random); // Output: A random number between 1 and 100
 2. **`formatNumber(double number, DecimalFormat format)`**: Formats the given number using the provided decimal format.
    - **Parameters**: `double number`, `DecimalFormat format`
    - **Returns**: `String`
-
 
 ## Contributing
 Feel free to contribute to `NumberTools` by forking the repository, making changes, and submitting a pull request. Contributions for bug fixes, new features, or optimizations are always welcome.
